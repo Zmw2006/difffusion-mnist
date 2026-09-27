@@ -15,7 +15,7 @@ class GaussianDiffusion:
         # including when steps is small (e.g. a 20-step smoke run).
         times = torch.linspace(0, steps, steps + 1, dtype=torch.float64) / steps
         alpha_bar_curve = torch.cos((times + 0.008) / 1.008 * math.pi / 2).square()
-        alpha_bar_curve /= alpha_bar_curve[0]
+        alpha_bar_curve = alpha_bar_curve / alpha_bar_curve[0]
         betas = (1 - alpha_bar_curve[1:] / alpha_bar_curve[:-1]).clamp(1e-8, 0.999).float()
         alphas = 1 - betas
         alpha_bars = torch.cumprod(alphas, dim=0)
